@@ -22,10 +22,10 @@ package org.apache.flink.ml.linalg.typeinfo;
 import org.apache.flink.api.common.ExecutionConfig;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.common.typeutils.TypeSerializer;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 
-/** A {@link TypeInformation} for the {@link SparseVector} type. */
-public class SparseVectorTypeInfo extends TypeInformation<SparseVector> {
+/** A {@link TypeInformation} for the {@link SparseVectorWithIntIndex} type. */
+public class SparseVectorTypeInfo extends TypeInformation<SparseVectorWithIntIndex> {
     public static final SparseVectorTypeInfo INSTANCE = new SparseVectorTypeInfo();
 
     @Override
@@ -49,8 +49,8 @@ public class SparseVectorTypeInfo extends TypeInformation<SparseVector> {
     }
 
     @Override
-    public Class<SparseVector> getTypeClass() {
-        return SparseVector.class;
+    public Class<SparseVectorWithIntIndex> getTypeClass() {
+        return SparseVectorWithIntIndex.class;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class SparseVectorTypeInfo extends TypeInformation<SparseVector> {
     }
 
     @Override
-    public TypeSerializer<SparseVector> createSerializer(ExecutionConfig executionConfig) {
+    public TypeSerializer<SparseVectorWithIntIndex> createSerializer(ExecutionConfig executionConfig) {
         return SparseVectorSerializer.INSTANCE;
     }
 

@@ -22,7 +22,7 @@ import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.ml.feature.minmaxscaler.MinMaxScaler;
 import org.apache.flink.ml.feature.minmaxscaler.MinMaxScalerModel;
 import org.apache.flink.ml.linalg.DenseVector;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.Vectors;
 import org.apache.flink.ml.util.ParamUtils;
 import org.apache.flink.ml.util.TestUtils;
@@ -159,9 +159,9 @@ public class MinMaxScalerTest extends AbstractTestBase {
         trainDataTable = TestUtils.convertDataTypesToSparseInt(tEnv, trainDataTable);
         predictDataTable = TestUtils.convertDataTypesToSparseInt(tEnv, predictDataTable);
         assertArrayEquals(
-                new Class<?>[] {SparseVector.class}, TestUtils.getColumnDataTypes(trainDataTable));
+                new Class<?>[] {SparseVectorWithIntIndex.class}, TestUtils.getColumnDataTypes(trainDataTable));
         assertArrayEquals(
-                new Class<?>[] {SparseVector.class},
+                new Class<?>[] {SparseVectorWithIntIndex.class},
                 TestUtils.getColumnDataTypes(predictDataTable));
 
         MinMaxScaler minMaxScaler = new MinMaxScaler();

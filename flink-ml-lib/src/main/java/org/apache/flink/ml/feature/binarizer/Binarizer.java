@@ -25,7 +25,7 @@ import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.ml.api.Transformer;
 import org.apache.flink.ml.common.datastream.TableUtils;
 import org.apache.flink.ml.linalg.DenseVector;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.Vector;
 import org.apache.flink.ml.linalg.typeinfo.DenseVectorTypeInfo;
 import org.apache.flink.ml.linalg.typeinfo.SparseVectorTypeInfo;
@@ -72,7 +72,7 @@ public class Binarizer implements Transformer<Binarizer>, BinarizerParams<Binari
         for (int i = 0; i < inputCols.length; ++i) {
             int idx = inputTypeInfo.getFieldIndex(inputCols[i]);
             Class<?> typeClass = inputTypeInfo.getTypeAt(idx).getTypeClass();
-            if (typeClass.equals(SparseVector.class)) {
+            if (typeClass.equals(SparseVectorWithIntIndex.class)) {
                 outputTypes[i] = SparseVectorTypeInfo.INSTANCE;
             } else if (typeClass.equals(DenseVector.class)) {
                 outputTypes[i] = DenseVectorTypeInfo.INSTANCE;
@@ -126,8 +126,8 @@ public class Binarizer implements Transformer<Binarizer>, BinarizerParams<Binari
                     vec.values[i] = inputVec.get(i) > threshold ? 1.0 : 0.0;
                 }
                 return vec;
-            } else if (obj instanceof SparseVector) {
-                SparseVector inputVec = (SparseVector) obj;
+            } else if (obj instanceof SparseVectorWithIntIndex) {
+                SparseVectorWithIntIndex inputVec = (SparseVectorWithIntIndex) obj;
                 int[] newIndices = new int[inputVec.indices.length];
                 int pos = 0;
 
@@ -139,7 +139,7 @@ public class Binarizer implements Transformer<Binarizer>, BinarizerParams<Binari
 
                 double[] newValues = new double[pos];
                 Arrays.fill(newValues, 1.0);
-                return new SparseVector(inputVec.size(), Arrays.copyOf(newIndices, pos), newValues);
+                return new SparseVectorWithIntIndex(inputVec.size(), Arrays.copyOf(newIndices, pos), newValues);
             } else {
                 return Double.parseDouble(obj.toString()) > threshold ? 1.0 : 0.0;
             }

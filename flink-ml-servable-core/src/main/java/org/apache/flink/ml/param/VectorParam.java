@@ -19,7 +19,7 @@
 package org.apache.flink.ml.param;
 
 import org.apache.flink.ml.linalg.DenseVector;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.Vector;
 
 import java.util.List;
@@ -60,7 +60,7 @@ public class VectorParam extends Param<Vector> {
                 values[i] = valuesList.get(i);
                 indices[i] = indicesList.get(i);
             }
-            return new SparseVector(n, indices, values);
+            return new SparseVectorWithIntIndex(n, indices, values);
         } else {
             throw new UnsupportedOperationException("Vector parameter is invalid.");
         }

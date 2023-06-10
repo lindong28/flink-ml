@@ -19,7 +19,7 @@
 package org.apache.flink.ml.feature;
 
 import org.apache.flink.ml.feature.dct.DCT;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.Vector;
 import org.apache.flink.ml.linalg.Vectors;
 import org.apache.flink.ml.util.TestUtils;
@@ -126,7 +126,7 @@ public class DCTTest extends AbstractTestBase {
     public void testInputTypeConversion() throws Exception {
         inputTable = TestUtils.convertDataTypesToSparseInt(tEnv, inputTable);
         assertArrayEquals(
-                new Class<?>[] {SparseVector.class}, TestUtils.getColumnDataTypes(inputTable));
+                new Class<?>[] {SparseVectorWithIntIndex.class}, TestUtils.getColumnDataTypes(inputTable));
 
         DCT dct = new DCT();
         Table outputTable = dct.transform(inputTable)[0];

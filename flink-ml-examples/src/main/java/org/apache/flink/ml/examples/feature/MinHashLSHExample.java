@@ -23,7 +23,7 @@ import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.ml.feature.lsh.MinHashLSH;
 import org.apache.flink.ml.feature.lsh.MinHashLSHModel;
 import org.apache.flink.ml.linalg.DenseVector;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.Vector;
 import org.apache.flink.ml.linalg.Vectors;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -77,7 +77,7 @@ public class MinHashLSHExample {
                                 Types.ROW_NAMED(
                                         new String[] {"id", "vec"},
                                         Types.INT,
-                                        TypeInformation.of(SparseVector.class))));
+                                        TypeInformation.of(SparseVectorWithIntIndex.class))));
 
         Table dataB =
                 tEnv.fromDataStream(
@@ -104,7 +104,7 @@ public class MinHashLSHExample {
                                 Types.ROW_NAMED(
                                         new String[] {"id", "vec"},
                                         Types.INT,
-                                        TypeInformation.of(SparseVector.class))));
+                                        TypeInformation.of(SparseVectorWithIntIndex.class))));
 
         // Creates a MinHashLSH estimator object and initializes its parameters.
         MinHashLSH lsh =

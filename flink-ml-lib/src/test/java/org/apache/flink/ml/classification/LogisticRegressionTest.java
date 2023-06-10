@@ -27,7 +27,7 @@ import org.apache.flink.ml.classification.logisticregression.LogisticRegressionM
 import org.apache.flink.ml.classification.logisticregression.LogisticRegressionModelDataUtil;
 import org.apache.flink.ml.classification.logisticregression.LogisticRegressionModelServable;
 import org.apache.flink.ml.linalg.DenseVector;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.Vector;
 import org.apache.flink.ml.linalg.Vectors;
 import org.apache.flink.ml.linalg.typeinfo.DenseVectorTypeInfo;
@@ -261,7 +261,7 @@ public class LogisticRegressionTest extends AbstractTestBase {
     public void testInputTypeConversion() throws Exception {
         binomialDataTable = TestUtils.convertDataTypesToSparseInt(tEnv, binomialDataTable);
         assertArrayEquals(
-                new Class<?>[] {SparseVector.class, Integer.class, Integer.class},
+                new Class<?>[] {SparseVectorWithIntIndex.class, Integer.class, Integer.class},
                 TestUtils.getColumnDataTypes(binomialDataTable));
 
         LogisticRegression logisticRegression = new LogisticRegression().setWeightCol("weight");

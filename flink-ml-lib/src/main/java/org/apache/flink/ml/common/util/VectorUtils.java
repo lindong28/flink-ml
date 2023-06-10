@@ -19,7 +19,7 @@
 package org.apache.flink.ml.common.util;
 
 import org.apache.flink.ml.linalg.DenseVector;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.Vector;
 
 import java.util.ArrayList;
@@ -42,18 +42,18 @@ public class VectorUtils {
             List<Integer> resultIndices = new ArrayList<>();
             List<Double> resultValues = new ArrayList<>();
 
-            int[] indices = ((SparseVector) vector).indices;
+            int[] indices = ((SparseVectorWithIntIndex) vector).indices;
             for (int i = 0, j = 0; i < indices.length && j < sortedIndices.length; ) {
                 if (indices[i] == sortedIndices[j]) {
                     resultIndices.add(j++);
-                    resultValues.add(((SparseVector) vector).values[i++]);
+                    resultValues.add(((SparseVectorWithIntIndex) vector).values[i++]);
                 } else if (indices[i] > sortedIndices[j]) {
                     j++;
                 } else {
                     i++;
                 }
             }
-            return new SparseVector(
+            return new SparseVectorWithIntIndex(
                     sortedIndices.length,
                     resultIndices.stream().mapToInt(Integer::intValue).toArray(),
                     resultValues.stream().mapToDouble(Double::doubleValue).toArray());

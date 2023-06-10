@@ -24,7 +24,7 @@ import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.ml.api.Transformer;
 import org.apache.flink.ml.common.datastream.TableUtils;
 import org.apache.flink.ml.linalg.DenseVector;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.Vector;
 import org.apache.flink.ml.linalg.typeinfo.VectorTypeInfo;
 import org.apache.flink.ml.param.Param;
@@ -136,8 +136,8 @@ public class PolynomialExpansion
                 double[] retVals = new double[getResultVectorSize(size, degree) - 1];
                 expandDenseVector(((DenseVector) vec).values, size - 1, degree, 1.0, retVals, -1);
                 outputVec = new DenseVector(retVals);
-            } else if (vec instanceof SparseVector) {
-                SparseVector sparseVec = (SparseVector) vec;
+            } else if (vec instanceof SparseVectorWithIntIndex) {
+                SparseVectorWithIntIndex sparseVec = (SparseVectorWithIntIndex) vec;
                 int[] indices = sparseVec.indices;
                 double[] values = sparseVec.values;
                 int size = sparseVec.size();
@@ -158,7 +158,7 @@ public class PolynomialExpansion
                         -1);
 
                 outputVec =
-                        new SparseVector(
+                        new SparseVectorWithIntIndex(
                                 getResultVectorSize(size, degree) - 1,
                                 polyIndices.f1,
                                 polyValues.f1);

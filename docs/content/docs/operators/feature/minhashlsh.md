@@ -76,7 +76,7 @@ import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.ml.feature.lsh.MinHashLSH;
 import org.apache.flink.ml.feature.lsh.MinHashLSHModel;
 import org.apache.flink.ml.linalg.DenseVector;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.Vector;
 import org.apache.flink.ml.linalg.Vectors;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;

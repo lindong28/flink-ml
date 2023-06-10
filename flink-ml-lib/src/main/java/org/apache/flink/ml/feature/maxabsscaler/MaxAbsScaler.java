@@ -24,7 +24,7 @@ import org.apache.flink.api.common.state.ListStateDescriptor;
 import org.apache.flink.iteration.operator.OperatorStateUtils;
 import org.apache.flink.ml.api.Estimator;
 import org.apache.flink.ml.linalg.DenseVector;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.Vector;
 import org.apache.flink.ml.linalg.typeinfo.DenseVectorTypeInfo;
 import org.apache.flink.ml.linalg.typeinfo.VectorTypeInfo;
@@ -129,9 +129,9 @@ public class MaxAbsScaler
                 for (int i = 0; i < currentValue.size(); ++i) {
                     maxAbsVector.values[i] = Math.max(maxAbsVector.values[i], Math.abs(values[i]));
                 }
-            } else if (currentValue instanceof SparseVector) {
-                int[] indices = ((SparseVector) currentValue).indices;
-                double[] values = ((SparseVector) currentValue).values;
+            } else if (currentValue instanceof SparseVectorWithIntIndex) {
+                int[] indices = ((SparseVectorWithIntIndex) currentValue).indices;
+                double[] values = ((SparseVectorWithIntIndex) currentValue).values;
 
                 for (int i = 0; i < indices.length; ++i) {
                     maxAbsVector.values[indices[i]] =

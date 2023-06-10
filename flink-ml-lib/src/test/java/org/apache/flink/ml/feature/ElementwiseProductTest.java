@@ -20,7 +20,7 @@ package org.apache.flink.ml.feature;
 
 import org.apache.flink.ml.feature.elementwiseproduct.ElementwiseProduct;
 import org.apache.flink.ml.linalg.DenseVector;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.Vectors;
 import org.apache.flink.ml.util.TestUtils;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -90,11 +90,11 @@ public class ElementwiseProductTest extends AbstractTestBase {
         for (Row result : results) {
             if (result.getField(0) == (Object) 0) {
                 if (isSparse) {
-                    SparseVector sparseVector = (SparseVector) result.getField(outputCol);
-                    assertEquals(EXPECTED_OUTPUT_SPARSE_VEC_SIZE_1, sparseVector.size());
-                    assertArrayEquals(EXPECTED_OUTPUT_SPARSE_VEC_INDICES_1, sparseVector.indices);
+                    SparseVectorWithIntIndex sparseVectorWithIntIndex = (SparseVectorWithIntIndex) result.getField(outputCol);
+                    assertEquals(EXPECTED_OUTPUT_SPARSE_VEC_SIZE_1, sparseVectorWithIntIndex.size());
+                    assertArrayEquals(EXPECTED_OUTPUT_SPARSE_VEC_INDICES_1, sparseVectorWithIntIndex.indices);
                     assertArrayEquals(
-                            EXPECTED_OUTPUT_SPARSE_VEC_VALUES_1, sparseVector.values, 1.0e-5);
+                            EXPECTED_OUTPUT_SPARSE_VEC_VALUES_1, sparseVectorWithIntIndex.values, 1.0e-5);
                 } else {
                     assertArrayEquals(
                             EXPECTED_OUTPUT_DENSE_VEC_ARRAY_1,
@@ -103,11 +103,11 @@ public class ElementwiseProductTest extends AbstractTestBase {
                 }
             } else if (result.getField(0) == (Object) 1) {
                 if (isSparse) {
-                    SparseVector sparseVector = (SparseVector) result.getField(outputCol);
-                    assertEquals(EXPECTED_OUTPUT_SPARSE_VEC_SIZE_2, sparseVector.size());
-                    assertArrayEquals(EXPECTED_OUTPUT_SPARSE_VEC_INDICES_2, sparseVector.indices);
+                    SparseVectorWithIntIndex sparseVectorWithIntIndex = (SparseVectorWithIntIndex) result.getField(outputCol);
+                    assertEquals(EXPECTED_OUTPUT_SPARSE_VEC_SIZE_2, sparseVectorWithIntIndex.size());
+                    assertArrayEquals(EXPECTED_OUTPUT_SPARSE_VEC_INDICES_2, sparseVectorWithIntIndex.indices);
                     assertArrayEquals(
-                            EXPECTED_OUTPUT_SPARSE_VEC_VALUES_2, sparseVector.values, 1.0e-5);
+                            EXPECTED_OUTPUT_SPARSE_VEC_VALUES_2, sparseVectorWithIntIndex.values, 1.0e-5);
                 } else {
                     assertArrayEquals(
                             EXPECTED_OUTPUT_DENSE_VEC_ARRAY_2,

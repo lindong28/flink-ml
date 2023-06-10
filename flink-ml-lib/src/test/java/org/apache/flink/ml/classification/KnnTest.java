@@ -25,7 +25,7 @@ import org.apache.flink.ml.classification.knn.KnnModel;
 import org.apache.flink.ml.classification.knn.KnnModelData;
 import org.apache.flink.ml.linalg.DenseMatrix;
 import org.apache.flink.ml.linalg.DenseVector;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.Vectors;
 import org.apache.flink.ml.util.ParamUtils;
 import org.apache.flink.ml.util.TestUtils;
@@ -179,10 +179,10 @@ public class KnnTest extends AbstractTestBase {
         trainData = TestUtils.convertDataTypesToSparseInt(tEnv, trainData);
         predictData = TestUtils.convertDataTypesToSparseInt(tEnv, predictData);
         assertArrayEquals(
-                new Class<?>[] {SparseVector.class, Integer.class},
+                new Class<?>[] {SparseVectorWithIntIndex.class, Integer.class},
                 TestUtils.getColumnDataTypes(trainData));
         assertArrayEquals(
-                new Class<?>[] {SparseVector.class, Integer.class},
+                new Class<?>[] {SparseVectorWithIntIndex.class, Integer.class},
                 TestUtils.getColumnDataTypes(predictData));
 
         Knn knn = new Knn();

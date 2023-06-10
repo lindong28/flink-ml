@@ -24,7 +24,7 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.ml.linalg.DenseMatrix;
 import org.apache.flink.ml.linalg.DenseVector;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.typeinfo.DenseMatrixTypeInfo;
 import org.apache.flink.ml.linalg.typeinfo.DenseVectorTypeInfo;
 import org.apache.flink.ml.linalg.typeinfo.SparseVectorTypeInfo;
@@ -117,7 +117,7 @@ public class TableUtilsTest {
         preDefinedDataTypes.add(DataTypes.RAW(DenseVectorTypeInfo.INSTANCE));
         dataFields.add(new DenseVector(new double[] {0.1, 0.2}));
         preDefinedDataTypes.add(DataTypes.RAW(SparseVectorTypeInfo.INSTANCE));
-        dataFields.add(new SparseVector(2, new int[] {0}, new double[] {0.1}));
+        dataFields.add(new SparseVectorWithIntIndex(2, new int[] {0}, new double[] {0.1}));
         preDefinedDataTypes.add(DataTypes.RAW(DenseMatrixTypeInfo.INSTANCE));
         dataFields.add(new DenseMatrix(2, 2));
         preDefinedDataTypes.add(

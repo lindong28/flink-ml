@@ -24,13 +24,13 @@ import org.apache.flink.api.common.typeutils.TypeSerializerSnapshot;
 import org.apache.flink.api.common.typeutils.base.TypeSerializerSingleton;
 import org.apache.flink.core.memory.DataInputView;
 import org.apache.flink.core.memory.DataOutputView;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 
 import java.io.IOException;
 import java.util.Arrays;
 
-/** Specialized serializer for {@link SparseVector}. */
-public final class SparseVectorSerializer extends TypeSerializerSingleton<SparseVector> {
+/** Specialized serializer for {@link SparseVectorWithIntIndex}. */
+public final class SparseVectorSerializer extends TypeSerializerSingleton<SparseVectorWithIntIndex> {
 
     private static final long serialVersionUID = 1L;
 
@@ -46,20 +46,20 @@ public final class SparseVectorSerializer extends TypeSerializerSingleton<Sparse
     }
 
     @Override
-    public SparseVector createInstance() {
-        return new SparseVector(0, EMPTY_INT_ARRAY, EMPTY_DOUBLE_ARRAY);
+    public SparseVectorWithIntIndex createInstance() {
+        return new SparseVectorWithIntIndex(0, EMPTY_INT_ARRAY, EMPTY_DOUBLE_ARRAY);
     }
 
     @Override
-    public SparseVector copy(SparseVector from) {
-        return new SparseVector(
+    public SparseVectorWithIntIndex copy(SparseVectorWithIntIndex from) {
+        return new SparseVectorWithIntIndex(
                 from.n,
                 Arrays.copyOf(from.indices, from.indices.length),
                 Arrays.copyOf(from.values, from.values.length));
     }
 
     @Override
-    public SparseVector copy(SparseVector from, SparseVector reuse) {
+    public SparseVectorWithIntIndex copy(SparseVectorWithIntIndex from, SparseVectorWithIntIndex reuse) {
         if (from.values.length == reuse.values.length && from.n == reuse.n) {
             System.arraycopy(from.values, 0, reuse.values, 0, from.values.length);
             System.arraycopy(from.indices, 0, reuse.indices, 0, from.indices.length);
@@ -74,7 +74,7 @@ public final class SparseVectorSerializer extends TypeSerializerSingleton<Sparse
     }
 
     @Override
-    public void serialize(SparseVector vector, DataOutputView target) throws IOException {
+    public void serialize(SparseVectorWithIntIndex vector, DataOutputView target) throws IOException {
         if (vector == null) {
             throw new IllegalArgumentException("The vector must not be null.");
         }
@@ -100,17 +100,17 @@ public final class SparseVectorSerializer extends TypeSerializerSingleton<Sparse
     }
 
     @Override
-    public SparseVector deserialize(DataInputView source) throws IOException {
+    public SparseVectorWithIntIndex deserialize(DataInputView source) throws IOException {
         int n = source.readInt();
         int len = source.readInt();
         int[] indices = new int[len];
         double[] values = new double[len];
         readSparseVectorArrays(indices, values, source, len);
-        return new SparseVector(n, indices, values);
+        return new SparseVectorWithIntIndex(n, indices, values);
     }
 
     @Override
-    public SparseVector deserialize(SparseVector reuse, DataInputView source) throws IOException {
+    public SparseVectorWithIntIndex deserialize(SparseVectorWithIntIndex reuse, DataInputView source) throws IOException {
         int n = source.readInt();
         int len = source.readInt();
         if (reuse.n == n && reuse.values.length == len) {
@@ -121,7 +121,7 @@ public final class SparseVectorSerializer extends TypeSerializerSingleton<Sparse
         int[] indices = new int[len];
         double[] values = new double[len];
         readSparseVectorArrays(indices, values, source, len);
-        return new SparseVector(n, indices, values);
+        return new SparseVectorWithIntIndex(n, indices, values);
     }
 
     @Override
@@ -136,14 +136,14 @@ public final class SparseVectorSerializer extends TypeSerializerSingleton<Sparse
     }
 
     @Override
-    public TypeSerializerSnapshot<SparseVector> snapshotConfiguration() {
+    public TypeSerializerSnapshot<SparseVectorWithIntIndex> snapshotConfiguration() {
         return new SparseVectorSerializerSnapshot();
     }
 
     /** Serializer configuration snapshot for compatibility and format evolution. */
     @SuppressWarnings("WeakerAccess")
     public static final class SparseVectorSerializerSnapshot
-            extends SimpleTypeSerializerSnapshot<SparseVector> {
+            extends SimpleTypeSerializerSnapshot<SparseVectorWithIntIndex> {
 
         public SparseVectorSerializerSnapshot() {
             super(() -> INSTANCE);

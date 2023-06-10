@@ -36,7 +36,7 @@ import org.apache.flink.ml.common.datastream.DataStreamUtils;
 import org.apache.flink.ml.common.datastream.TableUtils;
 import org.apache.flink.ml.linalg.BLAS;
 import org.apache.flink.ml.linalg.DenseVector;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.Vector;
 import org.apache.flink.ml.param.Param;
 import org.apache.flink.ml.util.ParamUtils;
@@ -378,7 +378,7 @@ public class OnlineLogisticRegression
                         weightSum[i] += 1.0;
                     }
                 } else {
-                    SparseVector svec = (SparseVector) vec;
+                    SparseVectorWithIntIndex svec = (SparseVectorWithIntIndex) vec;
                     for (int i = 0; i < svec.indices.length; ++i) {
                         int idx = svec.indices[i];
                         gradient[idx] += (p - label) * svec.values[i];

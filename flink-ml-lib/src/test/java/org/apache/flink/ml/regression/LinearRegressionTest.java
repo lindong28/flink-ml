@@ -21,7 +21,7 @@ package org.apache.flink.ml.regression;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.Vectors;
 import org.apache.flink.ml.linalg.typeinfo.DenseVectorTypeInfo;
 import org.apache.flink.ml.regression.linearregression.LinearRegression;
@@ -173,7 +173,7 @@ public class LinearRegressionTest extends AbstractTestBase {
     public void testInputTypeConversion() throws Exception {
         trainDataTable = TestUtils.convertDataTypesToSparseInt(tEnv, trainDataTable);
         assertArrayEquals(
-                new Class<?>[] {SparseVector.class, Integer.class, Integer.class},
+                new Class<?>[] {SparseVectorWithIntIndex.class, Integer.class, Integer.class},
                 TestUtils.getColumnDataTypes(trainDataTable));
 
         LinearRegression linearRegression = new LinearRegression().setWeightCol("weight");

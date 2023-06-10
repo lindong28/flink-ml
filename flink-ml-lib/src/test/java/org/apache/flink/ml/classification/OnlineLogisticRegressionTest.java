@@ -34,7 +34,7 @@ import org.apache.flink.ml.classification.logisticregression.LogisticRegressionM
 import org.apache.flink.ml.classification.logisticregression.OnlineLogisticRegression;
 import org.apache.flink.ml.classification.logisticregression.OnlineLogisticRegressionModel;
 import org.apache.flink.ml.linalg.DenseVector;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.Vectors;
 import org.apache.flink.ml.util.InMemorySinkFunction;
 import org.apache.flink.ml.util.InMemorySourceFunction;
@@ -232,7 +232,7 @@ public class OnlineLogisticRegressionTest extends TestLogger {
                                 trainSparseSource,
                                 new RowTypeInfo(
                                         new TypeInformation[] {
-                                            TypeInformation.of(SparseVector.class),
+                                            TypeInformation.of(SparseVectorWithIntIndex.class),
                                             Types.DOUBLE,
                                             Types.DOUBLE
                                         },
@@ -244,7 +244,7 @@ public class OnlineLogisticRegressionTest extends TestLogger {
                                 predictSparseSource,
                                 new RowTypeInfo(
                                         new TypeInformation[] {
-                                            TypeInformation.of(SparseVector.class), Types.DOUBLE
+                                            TypeInformation.of(SparseVectorWithIntIndex.class), Types.DOUBLE
                                         },
                                         new String[] {"features", "label"})));
 

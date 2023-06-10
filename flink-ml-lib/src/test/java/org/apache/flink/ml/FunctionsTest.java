@@ -20,7 +20,7 @@ package org.apache.flink.ml;
 
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.ml.linalg.DenseVector;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.Vector;
 import org.apache.flink.ml.linalg.Vectors;
 import org.apache.flink.ml.linalg.typeinfo.VectorTypeInfo;
@@ -63,7 +63,7 @@ public class FunctionsTest extends AbstractTestBase {
     private static final List<DenseVector> denseVectors =
             Arrays.asList(Vectors.dense(0.0, 0.0), Vectors.dense(0.0, 1.0));
 
-    private static final List<SparseVector> sparseVectors =
+    private static final List<SparseVectorWithIntIndex> SPARSE_VECTOR_WITH_INT_INDICES =
             Arrays.asList(
                     Vectors.sparse(2, new int[0], new double[0]),
                     Vectors.sparse(2, new int[] {1}, new double[] {1.0}));
@@ -84,7 +84,7 @@ public class FunctionsTest extends AbstractTestBase {
     @Test
     public void testVectorToArray() {
         testVectorToArray(denseVectors, null);
-        testVectorToArray(sparseVectors, null);
+        testVectorToArray(SPARSE_VECTOR_WITH_INT_INDICES, null);
         testVectorToArray(mixedVectors, VectorTypeInfo.INSTANCE);
     }
 

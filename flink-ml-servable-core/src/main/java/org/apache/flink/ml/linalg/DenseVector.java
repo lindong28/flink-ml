@@ -39,18 +39,20 @@ public class DenseVector implements Vector {
     }
 
     @Override
-    public int size() {
+    public long size() {
         return values.length;
     }
 
     @Override
-    public double get(int i) {
-        return values[i];
+    public double get(long i) {
+        // TODO: throw exception if i exceeds MAX INT.
+        return values[(int)i];
     }
 
     @Override
-    public void set(int i, double value) {
-        values[i] = value;
+    public void set(long i, double value) {
+        // TODO: throw exception if i exceeds MAX INT.
+        values[(int)i] = value;
     }
 
     @Override
@@ -64,7 +66,7 @@ public class DenseVector implements Vector {
     }
 
     @Override
-    public SparseVector toSparse() {
+    public SparseVectorWithIntIndex toSparse() {
         int numNonZeros = 0;
         for (double value : values) {
             if (value != 0.0) {
@@ -84,7 +86,7 @@ public class DenseVector implements Vector {
             k++;
         }
 
-        return new SparseVector(size(), nonZeroIndices, numZeroValues);
+        return new SparseVectorWithIntIndex(size(), nonZeroIndices, numZeroValues);
     }
 
     @Override

@@ -30,7 +30,7 @@ public class Vectors {
     }
 
     /** Creates a sparse vector from its values. */
-    public static SparseVector sparse(int size, int[] indices, double[] values) {
-        return new SparseVector(size, indices, values);
+    public static SparseVectorWithIntIndex sparse(int size, int[] indices, double[] values) {
+        return new SparseVectorWithIntIndex(size, indices, values);
     }
 }

@@ -45,7 +45,7 @@ public class BLASTest {
         assertArrayEquals(expectedResult, anotherDenseVec.values, TOLERANCE);
 
         // Tests axpy(sparse, dense).
-        SparseVector sparseVec = Vectors.sparse(5, new int[] {0, 2, 4}, new double[] {1, 3, 5});
+        SparseVectorWithIntIndex sparseVec = Vectors.sparse(5, new int[] {0, 2, 4}, new double[] {1, 3, 5});
         BLAS.axpy(2, sparseVec, anotherDenseVec);
         expectedResult = new double[] {4, 0, 12, 8, 10};
         assertArrayEquals(expectedResult, anotherDenseVec.values, TOLERANCE);
@@ -60,7 +60,7 @@ public class BLASTest {
         assertArrayEquals(expectedResult, anotherDenseVec.values, TOLERANCE);
 
         // Tests axpy(sparse, dense, k).
-        SparseVector sparseVec = Vectors.sparse(5, new int[] {0, 2, 4}, new double[] {1, 3, 5});
+        SparseVectorWithIntIndex sparseVec = Vectors.sparse(5, new int[] {0, 2, 4}, new double[] {1, 3, 5});
         anotherDenseVec = Vectors.dense(1, 2, 3, 4, 5, 6, 7);
         BLAS.axpy(2, sparseVec, anotherDenseVec, 5);
         expectedResult = new double[] {3, 2, 9, 4, 15, 6, 7};
@@ -70,36 +70,36 @@ public class BLASTest {
     @Test
     public void testDot() {
         DenseVector anotherDenseVec = Vectors.dense(1, 2, 3, 4, 5);
-        SparseVector sparseVector1 =
+        SparseVectorWithIntIndex sparseVectorWithIntIndex1 =
                 Vectors.sparse(5, new int[] {1, 2, 4}, new double[] {1., 1., 4.});
-        SparseVector sparseVector2 =
+        SparseVectorWithIntIndex sparseVectorWithIntIndex2 =
                 Vectors.sparse(5, new int[] {1, 3, 4}, new double[] {1., 2., 1.});
         // Tests dot(dense, dense).
         assertEquals(-3, BLAS.dot(inputDenseVec, anotherDenseVec), TOLERANCE);
         // Tests dot(dense, sparse).
-        assertEquals(-19, BLAS.dot(inputDenseVec, sparseVector1), TOLERANCE);
+        assertEquals(-19, BLAS.dot(inputDenseVec, sparseVectorWithIntIndex1), TOLERANCE);
         // Tests dot(sparse, dense).
-        assertEquals(1, BLAS.dot(sparseVector2, inputDenseVec), TOLERANCE);
+        assertEquals(1, BLAS.dot(sparseVectorWithIntIndex2, inputDenseVec), TOLERANCE);
         // Tests dot(sparse, sparse).
-        assertEquals(5, BLAS.dot(sparseVector1, sparseVector2), TOLERANCE);
+        assertEquals(5, BLAS.dot(sparseVectorWithIntIndex1, sparseVectorWithIntIndex2), TOLERANCE);
     }
 
     @Test
     public void testNorm2() {
         assertEquals(Math.sqrt(55), BLAS.norm2(inputDenseVec), TOLERANCE);
 
-        SparseVector sparseVector = Vectors.sparse(5, new int[] {0, 2, 4}, new double[] {1, 3, 5});
-        assertEquals(Math.sqrt(35), BLAS.norm2(sparseVector), TOLERANCE);
+        SparseVectorWithIntIndex sparseVectorWithIntIndex = Vectors.sparse(5, new int[] {0, 2, 4}, new double[] {1, 3, 5});
+        assertEquals(Math.sqrt(35), BLAS.norm2(sparseVectorWithIntIndex), TOLERANCE);
     }
 
     @Test
     public void testNorm() {
         assertEquals(Math.sqrt(55), BLAS.norm(inputDenseVec, 2.0), TOLERANCE);
 
-        SparseVector sparseVector = Vectors.sparse(5, new int[] {0, 2, 4}, new double[] {1, 3, 5});
-        assertEquals(5.0, BLAS.norm(sparseVector, Double.POSITIVE_INFINITY), TOLERANCE);
+        SparseVectorWithIntIndex sparseVectorWithIntIndex = Vectors.sparse(5, new int[] {0, 2, 4}, new double[] {1, 3, 5});
+        assertEquals(5.0, BLAS.norm(sparseVectorWithIntIndex, Double.POSITIVE_INFINITY), TOLERANCE);
 
-        assertEquals(5.348481241239363, BLAS.norm(sparseVector, 3.0), TOLERANCE);
+        assertEquals(5.348481241239363, BLAS.norm(sparseVectorWithIntIndex, 3.0), TOLERANCE);
     }
 
     @Test
@@ -109,15 +109,15 @@ public class BLASTest {
         double[] expectedDenseResult = new double[] {2, -4, 6, 8, -10};
         assertArrayEquals(expectedDenseResult, inputDenseVec.values, TOLERANCE);
 
-        SparseVector inputSparseVector =
+        SparseVectorWithIntIndex inputSparseVectorWithIntIndex =
                 Vectors.sparse(5, new int[] {0, 2, 4}, new double[] {1, 3, 5});
-        BLAS.scal(1.5, inputSparseVector);
+        BLAS.scal(1.5, inputSparseVectorWithIntIndex);
 
         double[] expectedSparseResult = new double[] {1.5, 4.5, 7.5};
         int[] expectedSparseIndices = new int[] {0, 2, 4};
 
-        assertArrayEquals(expectedSparseResult, inputSparseVector.values, TOLERANCE);
-        assertArrayEquals(expectedSparseIndices, inputSparseVector.indices);
+        assertArrayEquals(expectedSparseResult, inputSparseVectorWithIntIndex.values, TOLERANCE);
+        assertArrayEquals(expectedSparseIndices, inputSparseVectorWithIntIndex.indices);
     }
 
     @Test
@@ -131,8 +131,8 @@ public class BLASTest {
     @Test
     public void testHDot() {
         // Tests hDot(sparse, sparse).
-        SparseVector sparseVec1 = Vectors.sparse(5, new int[] {0, 2, 3}, new double[] {1, 3, 5});
-        SparseVector sparseVec2 = Vectors.sparse(5, new int[] {0, 1, 4}, new double[] {1, 3, 5});
+        SparseVectorWithIntIndex sparseVec1 = Vectors.sparse(5, new int[] {0, 2, 3}, new double[] {1, 3, 5});
+        SparseVectorWithIntIndex sparseVec2 = Vectors.sparse(5, new int[] {0, 1, 4}, new double[] {1, 3, 5});
         BLAS.hDot(sparseVec1, sparseVec2);
         assertEquals(5, sparseVec2.size());
         assertArrayEquals(new int[] {0, 1, 4}, sparseVec2.indices);

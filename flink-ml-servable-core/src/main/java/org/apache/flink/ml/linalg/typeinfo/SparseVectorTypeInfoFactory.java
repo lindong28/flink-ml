@@ -22,18 +22,18 @@ package org.apache.flink.ml.linalg.typeinfo;
 import org.apache.flink.api.common.typeinfo.TypeInfoFactory;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.TypeExtractor;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 
 import java.lang.reflect.Type;
 import java.util.Map;
 
 /**
  * Used by {@link TypeExtractor} to create a {@link TypeInformation} for implementations of {@link
- * SparseVector}.
+ * SparseVectorWithIntIndex}.
  */
-public class SparseVectorTypeInfoFactory extends TypeInfoFactory<SparseVector> {
+public class SparseVectorTypeInfoFactory extends TypeInfoFactory<SparseVectorWithIntIndex> {
     @Override
-    public TypeInformation<SparseVector> createTypeInfo(
+    public TypeInformation<SparseVectorWithIntIndex> createTypeInfo(
             Type type, Map<String, TypeInformation<?>> map) {
         return new SparseVectorTypeInfo();
     }

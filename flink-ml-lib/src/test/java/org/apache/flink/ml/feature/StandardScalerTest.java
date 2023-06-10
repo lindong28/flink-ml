@@ -22,7 +22,7 @@ import org.apache.flink.ml.feature.standardscaler.StandardScaler;
 import org.apache.flink.ml.feature.standardscaler.StandardScalerModel;
 import org.apache.flink.ml.feature.standardscaler.StandardScalerModelData;
 import org.apache.flink.ml.linalg.DenseVector;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.Vector;
 import org.apache.flink.ml.linalg.Vectors;
 import org.apache.flink.ml.util.ParamUtils;
@@ -179,7 +179,7 @@ public class StandardScalerTest extends AbstractTestBase {
     public void testInputTypeConversion() throws Exception {
         denseTable = TestUtils.convertDataTypesToSparseInt(tEnv, denseTable);
         assertArrayEquals(
-                new Class<?>[] {SparseVector.class}, TestUtils.getColumnDataTypes(denseTable));
+                new Class<?>[] {SparseVectorWithIntIndex.class}, TestUtils.getColumnDataTypes(denseTable));
 
         StandardScaler standardScaler = new StandardScaler().setWithMean(true);
         Table output = standardScaler.fit(denseTable).transform(denseTable)[0];

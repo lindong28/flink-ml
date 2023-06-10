@@ -25,7 +25,7 @@ import org.apache.flink.api.common.typeutils.base.TypeSerializerSingleton;
 import org.apache.flink.core.memory.DataInputView;
 import org.apache.flink.core.memory.DataOutputView;
 import org.apache.flink.ml.linalg.DenseVector;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.Vector;
 
 import java.io.IOException;
@@ -57,7 +57,7 @@ public final class VectorSerializer extends TypeSerializerSingleton<Vector> {
         if (from instanceof DenseVector) {
             return denseVectorSerializer.copy((DenseVector) from);
         } else {
-            return SPARSE_VECTOR_SERIALIZER.copy((SparseVector) from);
+            return SPARSE_VECTOR_SERIALIZER.copy((SparseVectorWithIntIndex) from);
         }
     }
 
@@ -67,7 +67,7 @@ public final class VectorSerializer extends TypeSerializerSingleton<Vector> {
         if (from instanceof DenseVector) {
             return denseVectorSerializer.copy((DenseVector) from, (DenseVector) reuse);
         } else {
-            return SPARSE_VECTOR_SERIALIZER.copy((SparseVector) from, (SparseVector) reuse);
+            return SPARSE_VECTOR_SERIALIZER.copy((SparseVectorWithIntIndex) from, (SparseVectorWithIntIndex) reuse);
         }
     }
 
@@ -83,7 +83,7 @@ public final class VectorSerializer extends TypeSerializerSingleton<Vector> {
             denseVectorSerializer.serialize((DenseVector) vector, target);
         } else {
             target.writeByte(1);
-            SPARSE_VECTOR_SERIALIZER.serialize((SparseVector) vector, target);
+            SPARSE_VECTOR_SERIALIZER.serialize((SparseVectorWithIntIndex) vector, target);
         }
     }
 
@@ -101,7 +101,7 @@ public final class VectorSerializer extends TypeSerializerSingleton<Vector> {
     public Vector deserialize(Vector reuse, DataInputView source) throws IOException {
         byte type = source.readByte();
         assert type == 0 && reuse instanceof DenseVector
-                || type == 1 && reuse instanceof SparseVector;
+                || type == 1 && reuse instanceof SparseVectorWithIntIndex;
         if (type == 0) {
             return denseVectorSerializer.deserialize(source);
         } else {

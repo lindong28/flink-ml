@@ -40,8 +40,8 @@ public class BLAS {
     /** y += a * x for the first k dimensions, with the other dimensions unchanged. */
     public static void axpy(double a, Vector x, DenseVector y, int k) {
         Preconditions.checkArgument(x.size() >= k && y.size() >= k);
-        if (x instanceof SparseVector) {
-            axpy(a, (SparseVector) x, y, k);
+        if (x instanceof SparseVectorWithIntIndex) {
+            axpy(a, (SparseVectorWithIntIndex) x, y, k);
         } else {
             axpy(a, (DenseVector) x, y, k);
         }
@@ -50,15 +50,15 @@ public class BLAS {
     /** Computes the hadamard product of the two vectors (y = y \hdot x). */
     public static void hDot(Vector x, Vector y) {
         Preconditions.checkArgument(x.size() == y.size(), "Vector size mismatched.");
-        if (x instanceof SparseVector) {
-            if (y instanceof SparseVector) {
-                hDot((SparseVector) x, (SparseVector) y);
+        if (x instanceof SparseVectorWithIntIndex) {
+            if (y instanceof SparseVectorWithIntIndex) {
+                hDot((SparseVectorWithIntIndex) x, (SparseVectorWithIntIndex) y);
             } else {
-                hDot((SparseVector) x, (DenseVector) y);
+                hDot((SparseVectorWithIntIndex) x, (DenseVector) y);
             }
         } else {
-            if (y instanceof SparseVector) {
-                hDot((DenseVector) x, (SparseVector) y);
+            if (y instanceof SparseVectorWithIntIndex) {
+                hDot((DenseVector) x, (SparseVectorWithIntIndex) y);
             } else {
                 hDot((DenseVector) x, (DenseVector) y);
             }
@@ -68,15 +68,15 @@ public class BLAS {
     /** Computes the dot of the two vectors (y \dot x). */
     public static double dot(Vector x, Vector y) {
         Preconditions.checkArgument(x.size() == y.size(), "Vector size mismatched.");
-        if (x instanceof SparseVector) {
-            if (y instanceof SparseVector) {
-                return dot((SparseVector) x, (SparseVector) y);
+        if (x instanceof SparseVectorWithIntIndex) {
+            if (y instanceof SparseVectorWithIntIndex) {
+                return dot((SparseVectorWithIntIndex) x, (SparseVectorWithIntIndex) y);
             } else {
-                return dot((DenseVector) y, (SparseVector) x);
+                return dot((DenseVector) y, (SparseVectorWithIntIndex) x);
             }
         } else {
-            if (y instanceof SparseVector) {
-                return dot((DenseVector) x, (SparseVector) y);
+            if (y instanceof SparseVectorWithIntIndex) {
+                return dot((DenseVector) x, (SparseVectorWithIntIndex) y);
             } else {
                 return dot((DenseVector) x, (DenseVector) y);
             }
@@ -87,7 +87,7 @@ public class BLAS {
         return JAVA_BLAS.ddot(x.size(), x.values, 1, y.values, 1);
     }
 
-    private static double dot(DenseVector x, SparseVector y) {
+    private static double dot(DenseVector x, SparseVectorWithIntIndex y) {
         double dotValue = 0.0;
         for (int i = 0; i < y.indices.length; ++i) {
             dotValue += y.values[i] * x.values[y.indices[i]];
@@ -95,7 +95,7 @@ public class BLAS {
         return dotValue;
     }
 
-    private static double dot(SparseVector x, SparseVector y) {
+    private static double dot(SparseVectorWithIntIndex x, SparseVectorWithIntIndex y) {
         double dotValue = 0;
         int p0 = 0;
         int p1 = 0;
@@ -118,14 +118,14 @@ public class BLAS {
         if (x instanceof DenseVector) {
             return norm2((DenseVector) x);
         }
-        return norm2((SparseVector) x);
+        return norm2((SparseVectorWithIntIndex) x);
     }
 
     private static double norm2(DenseVector x) {
         return JAVA_BLAS.dnrm2(x.size(), x.values, 1);
     }
 
-    private static double norm2(SparseVector x) {
+    private static double norm2(SparseVectorWithIntIndex x) {
         return JAVA_BLAS.dnrm2(x.values.length, x.values, 1);
     }
 
@@ -134,7 +134,7 @@ public class BLAS {
         Preconditions.checkArgument(p >= 1.0, "p value must >= 1.0, but the current p is : " + p);
         double norm = 0.0;
         double[] data =
-                (x instanceof DenseVector) ? ((DenseVector) x).values : ((SparseVector) x).values;
+                (x instanceof DenseVector) ? ((DenseVector) x).values : ((SparseVectorWithIntIndex) x).values;
 
         if (p == 1.0) {
             for (double datum : data) {
@@ -161,7 +161,7 @@ public class BLAS {
         if (x instanceof DenseVector) {
             JAVA_BLAS.dscal(x.size(), a, ((DenseVector) x).values, 1);
         } else {
-            double[] values = ((SparseVector) x).values;
+            double[] values = ((SparseVectorWithIntIndex) x).values;
             JAVA_BLAS.dscal(values.length, a, values, 1);
         }
     }
@@ -207,7 +207,7 @@ public class BLAS {
         JAVA_BLAS.daxpy(k, a, x.values, 1, y.values, 1);
     }
 
-    private static void axpy(double a, SparseVector x, DenseVector y, int k) {
+    private static void axpy(double a, SparseVectorWithIntIndex x, DenseVector y, int k) {
         for (int i = 0; i < x.indices.length; i++) {
             int index = x.indices[i];
             if (index >= k) {
@@ -217,7 +217,7 @@ public class BLAS {
         }
     }
 
-    private static void hDot(SparseVector x, SparseVector y) {
+    private static void hDot(SparseVectorWithIntIndex x, SparseVectorWithIntIndex y) {
         int idx = 0;
         int idy = 0;
         while (idx < x.indices.length && idy < y.indices.length) {
@@ -238,7 +238,7 @@ public class BLAS {
         }
     }
 
-    private static void hDot(SparseVector x, DenseVector y) {
+    private static void hDot(SparseVectorWithIntIndex x, DenseVector y) {
         int idx = 0;
         for (int i = 0; i < y.size(); i++) {
             if (idx < x.indices.length && x.indices[idx] == i) {
@@ -250,7 +250,7 @@ public class BLAS {
         }
     }
 
-    private static void hDot(DenseVector x, SparseVector y) {
+    private static void hDot(DenseVector x, SparseVectorWithIntIndex y) {
         for (int i = 0; i < y.values.length; i++) {
             y.values[i] *= x.values[y.indices[i]];
         }

@@ -23,7 +23,7 @@ import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.ml.api.Transformer;
 import org.apache.flink.ml.common.datastream.TableUtils;
 import org.apache.flink.ml.linalg.DenseVector;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.Vector;
 import org.apache.flink.ml.linalg.Vectors;
 import org.apache.flink.ml.linalg.typeinfo.VectorTypeInfo;
@@ -115,11 +115,11 @@ public class Interaction implements Transformer<Interaction>, InteractionParams<
 
                     featureValues[i] = ((DenseVector) obj).values;
                     nnz *= featureSize[i];
-                } else if (obj instanceof SparseVector) {
+                } else if (obj instanceof SparseVectorWithIntIndex) {
                     featureSize[i] = ((Vector) obj).size();
-                    featureIndices[i] = ((SparseVector) obj).indices;
-                    featureValues[i] = ((SparseVector) obj).values;
-                    nnz *= ((SparseVector) obj).values.length;
+                    featureIndices[i] = ((SparseVectorWithIntIndex) obj).indices;
+                    featureValues[i] = ((SparseVectorWithIntIndex) obj).values;
+                    nnz *= ((SparseVectorWithIntIndex) obj).values.length;
                     hasSparse = true;
                 } else {
                     featureSize[i] = 1;

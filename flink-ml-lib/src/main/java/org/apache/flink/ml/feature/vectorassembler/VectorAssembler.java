@@ -25,7 +25,7 @@ import org.apache.flink.ml.api.Transformer;
 import org.apache.flink.ml.common.datastream.TableUtils;
 import org.apache.flink.ml.common.param.HasHandleInvalid;
 import org.apache.flink.ml.linalg.DenseVector;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.Vector;
 import org.apache.flink.ml.linalg.Vectors;
 import org.apache.flink.ml.linalg.typeinfo.VectorTypeInfo;
@@ -139,10 +139,10 @@ public class VectorAssembler
                         }
                         vectorSize += 1;
                         nnz += 1;
-                    } else if (object instanceof SparseVector) {
-                        int localSize = ((SparseVector) object).size();
+                    } else if (object instanceof SparseVectorWithIntIndex) {
+                        int localSize = ((SparseVectorWithIntIndex) object).size();
                         checkSize(inputSizes[i], localSize);
-                        nnz += ((SparseVector) object).indices.length;
+                        nnz += ((SparseVectorWithIntIndex) object).indices.length;
                         vectorSize += localSize;
                     } else if (object instanceof DenseVector) {
                         int localSize = ((DenseVector) object).size();
@@ -213,12 +213,12 @@ public class VectorAssembler
             Object object = inputRow.getField(inputCol);
             if (object instanceof Number) {
                 values[currentOffset++] = ((Number) object).doubleValue();
-            } else if (object instanceof SparseVector) {
-                SparseVector sparseVector = (SparseVector) object;
-                for (int i = 0; i < sparseVector.indices.length; i++) {
-                    values[currentOffset + sparseVector.indices[i]] = sparseVector.values[i];
+            } else if (object instanceof SparseVectorWithIntIndex) {
+                SparseVectorWithIntIndex sparseVectorWithIntIndex = (SparseVectorWithIntIndex) object;
+                for (int i = 0; i < sparseVectorWithIntIndex.indices.length; i++) {
+                    values[currentOffset + sparseVectorWithIntIndex.indices[i]] = sparseVectorWithIntIndex.values[i];
                 }
-                currentOffset += sparseVector.size();
+                currentOffset += sparseVectorWithIntIndex.size();
 
             } else {
                 DenseVector denseVector = (DenseVector) object;
@@ -246,15 +246,15 @@ public class VectorAssembler
                 values[currentOffset] = ((Number) object).doubleValue();
                 currentOffset++;
                 currentIndex++;
-            } else if (object instanceof SparseVector) {
-                SparseVector sparseVector = (SparseVector) object;
-                for (int i = 0; i < sparseVector.indices.length; i++) {
-                    indices[currentOffset + i] = sparseVector.indices[i] + currentIndex;
+            } else if (object instanceof SparseVectorWithIntIndex) {
+                SparseVectorWithIntIndex sparseVectorWithIntIndex = (SparseVectorWithIntIndex) object;
+                for (int i = 0; i < sparseVectorWithIntIndex.indices.length; i++) {
+                    indices[currentOffset + i] = sparseVectorWithIntIndex.indices[i] + currentIndex;
                 }
                 System.arraycopy(
-                        sparseVector.values, 0, values, currentOffset, sparseVector.values.length);
-                currentIndex += sparseVector.size();
-                currentOffset += sparseVector.indices.length;
+                        sparseVectorWithIntIndex.values, 0, values, currentOffset, sparseVectorWithIntIndex.values.length);
+                currentIndex += sparseVectorWithIntIndex.size();
+                currentOffset += sparseVectorWithIntIndex.indices.length;
             } else {
                 DenseVector denseVector = (DenseVector) object;
                 for (int i = 0; i < denseVector.size(); ++i) {
@@ -266,6 +266,6 @@ public class VectorAssembler
                 currentOffset += denseVector.size();
             }
         }
-        return new SparseVector(vectorSize, indices, values);
+        return new SparseVectorWithIntIndex(vectorSize, indices, values);
     }
 }

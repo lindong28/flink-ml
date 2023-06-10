@@ -22,7 +22,7 @@ import org.apache.flink.ml.feature.lsh.MinHashLSH;
 import org.apache.flink.ml.feature.lsh.MinHashLSHModel;
 import org.apache.flink.ml.feature.lsh.MinHashLSHModelData;
 import org.apache.flink.ml.linalg.DenseVector;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.Vector;
 import org.apache.flink.ml.linalg.Vectors;
 import org.apache.flink.ml.util.ParamUtils;
@@ -134,7 +134,7 @@ public class MinHashLSHTest extends AbstractTestBase {
         Schema schema =
                 Schema.newBuilder()
                         .column("f0", DataTypes.INT())
-                        .column("f1", DataTypes.of(SparseVector.class))
+                        .column("f1", DataTypes.of(SparseVectorWithIntIndex.class))
                         .build();
         DataStream<Row> dataStream = env.fromCollection(inputRows);
 
@@ -410,7 +410,7 @@ public class MinHashLSHTest extends AbstractTestBase {
         Schema schema =
                 Schema.newBuilder()
                         .column("f0", DataTypes.INT())
-                        .column("f1", DataTypes.of(SparseVector.class))
+                        .column("f1", DataTypes.of(SparseVectorWithIntIndex.class))
                         .build();
         Table dataB = tEnv.fromDataStream(env.fromCollection(inputRowsB), schema).as("id", "vec");
 

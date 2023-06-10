@@ -25,7 +25,7 @@ import org.apache.flink.ml.api.Estimator;
 import org.apache.flink.ml.common.datastream.DataStreamUtils;
 import org.apache.flink.ml.linalg.BLAS;
 import org.apache.flink.ml.linalg.DenseVector;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.Vector;
 import org.apache.flink.ml.linalg.Vectors;
 import org.apache.flink.ml.linalg.typeinfo.VectorTypeInfo;
@@ -119,8 +119,8 @@ public class IDF implements Estimator<IDF, IDFModel>, IDFParams<IDF> {
             numDocsAndDocFreq.f0 += 1L;
 
             double[] values;
-            if (vector instanceof SparseVector) {
-                values = ((SparseVector) vector).values;
+            if (vector instanceof SparseVectorWithIntIndex) {
+                values = ((SparseVectorWithIntIndex) vector).values;
             } else {
                 values = ((DenseVector) vector).values;
             }

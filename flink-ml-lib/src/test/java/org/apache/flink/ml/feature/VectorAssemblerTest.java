@@ -21,7 +21,7 @@ package org.apache.flink.ml.feature;
 import org.apache.flink.ml.common.param.HasHandleInvalid;
 import org.apache.flink.ml.feature.vectorassembler.VectorAssembler;
 import org.apache.flink.ml.linalg.DenseVector;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.Vectors;
 import org.apache.flink.ml.util.TestUtils;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -111,7 +111,7 @@ public class VectorAssemblerTest extends AbstractTestBase {
                             Vectors.sparse(
                                     5, new int[] {4, 2, 3, 1}, new double[] {4.0, 2.0, 3.0, 1.0})));
 
-    private static final SparseVector EXPECTED_OUTPUT_DATA_1 =
+    private static final SparseVectorWithIntIndex EXPECTED_OUTPUT_DATA_1 =
             Vectors.sparse(8, new int[] {0, 1, 2, 6}, new double[] {2.1, 3.1, 1.0, 1.0});
     private static final DenseVector EXPECTED_OUTPUT_DATA_2 =
             Vectors.dense(2.1, 3.1, 1.0, 0.0, 1.0, 2.0, 3.0, 4.0);
@@ -373,7 +373,7 @@ public class VectorAssemblerTest extends AbstractTestBase {
         inputDataTable = TestUtils.convertDataTypesToSparseInt(tEnv, inputDataTable);
         assertArrayEquals(
                 new Class<?>[] {
-                    Integer.class, SparseVector.class, Integer.class, SparseVector.class
+                    Integer.class, SparseVectorWithIntIndex.class, Integer.class, SparseVectorWithIntIndex.class
                 },
                 TestUtils.getColumnDataTypes(inputDataTable));
 

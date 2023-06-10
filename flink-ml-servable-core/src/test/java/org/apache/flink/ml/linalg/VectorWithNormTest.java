@@ -31,9 +31,9 @@ public class VectorWithNormTest {
         assertEquals(denseVector, denseVectorWithNorm.vector);
         assertEquals(Math.sqrt(14), denseVectorWithNorm.l2Norm, 1e-7);
 
-        SparseVector sparseVector = Vectors.sparse(5, new int[] {0, 2, 4}, new double[] {1, 2, 3});
-        VectorWithNorm sparseVectorWithNorm = new VectorWithNorm(sparseVector);
-        assertEquals(sparseVector, sparseVectorWithNorm.vector);
+        SparseVectorWithIntIndex sparseVectorWithIntIndex = Vectors.sparse(5, new int[] {0, 2, 4}, new double[] {1, 2, 3});
+        VectorWithNorm sparseVectorWithNorm = new VectorWithNorm(sparseVectorWithIntIndex);
+        assertEquals(sparseVectorWithIntIndex, sparseVectorWithNorm.vector);
         assertEquals(Math.sqrt(14), sparseVectorWithNorm.l2Norm, 1e-7);
     }
 }

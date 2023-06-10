@@ -23,7 +23,7 @@ import org.apache.flink.ml.clustering.kmeans.KMeansModel;
 import org.apache.flink.ml.clustering.kmeans.KMeansModelData;
 import org.apache.flink.ml.common.distance.EuclideanDistanceMeasure;
 import org.apache.flink.ml.linalg.DenseVector;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.Vector;
 import org.apache.flink.ml.linalg.Vectors;
 import org.apache.flink.ml.util.ParamUtils;
@@ -191,7 +191,7 @@ public class KMeansTest extends AbstractTestBase {
     public void testInputTypeConversion() {
         dataTable = TestUtils.convertDataTypesToSparseInt(tEnv, dataTable);
         assertArrayEquals(
-                new Class<?>[] {SparseVector.class}, TestUtils.getColumnDataTypes(dataTable));
+                new Class<?>[] {SparseVectorWithIntIndex.class}, TestUtils.getColumnDataTypes(dataTable));
 
         KMeans kmeans = new KMeans().setMaxIter(2).setK(2);
         KMeansModel model = kmeans.fit(dataTable);

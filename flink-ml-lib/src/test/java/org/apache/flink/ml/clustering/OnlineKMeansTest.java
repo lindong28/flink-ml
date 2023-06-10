@@ -32,7 +32,7 @@ import org.apache.flink.ml.clustering.kmeans.OnlineKMeans;
 import org.apache.flink.ml.clustering.kmeans.OnlineKMeansModel;
 import org.apache.flink.ml.common.distance.EuclideanDistanceMeasure;
 import org.apache.flink.ml.linalg.DenseVector;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.Vectors;
 import org.apache.flink.ml.linalg.typeinfo.DenseVectorTypeInfo;
 import org.apache.flink.ml.util.InMemorySinkFunction;
@@ -324,13 +324,13 @@ public class OnlineKMeansTest extends TestLogger {
         onlinePredictTable = TestUtils.convertDataTypesToSparseInt(tEnv, onlinePredictTable);
 
         assertArrayEquals(
-                new Class<?>[] {SparseVector.class},
+                new Class<?>[] {SparseVectorWithIntIndex.class},
                 TestUtils.getColumnDataTypes(offlineTrainTable));
         assertArrayEquals(
-                new Class<?>[] {SparseVector.class},
+                new Class<?>[] {SparseVectorWithIntIndex.class},
                 TestUtils.getColumnDataTypes(onlineTrainTable));
         assertArrayEquals(
-                new Class<?>[] {SparseVector.class},
+                new Class<?>[] {SparseVectorWithIntIndex.class},
                 TestUtils.getColumnDataTypes(onlinePredictTable));
 
         OnlineKMeans onlineKMeans =

@@ -23,7 +23,7 @@ import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.ml.api.Model;
 import org.apache.flink.ml.common.broadcast.BroadcastUtils;
 import org.apache.flink.ml.common.datastream.TableUtils;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.Vectors;
 import org.apache.flink.ml.linalg.typeinfo.SparseVectorTypeInfo;
 import org.apache.flink.ml.param.Param;
@@ -177,7 +177,7 @@ public class CountVectorizerModel
                 }
             }
 
-            SparseVector outputVec =
+            SparseVectorWithIntIndex outputVec =
                     Vectors.sparse(
                             termCounts.length,
                             indices.stream().mapToInt(i -> i).toArray(),

@@ -23,7 +23,7 @@ import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.ml.api.Transformer;
 import org.apache.flink.ml.common.datastream.TableUtils;
 import org.apache.flink.ml.linalg.DenseVector;
-import org.apache.flink.ml.linalg.SparseVector;
+import org.apache.flink.ml.linalg.SparseVectorWithIntIndex;
 import org.apache.flink.ml.linalg.Vector;
 import org.apache.flink.ml.linalg.typeinfo.VectorTypeInfo;
 import org.apache.flink.ml.param.Param;
@@ -125,7 +125,7 @@ public class VectorSlicer implements Transformer<VectorSlicer>, VectorSlicerPara
                 outputVec = new DenseVector(values);
             } else {
                 int nnz = 0;
-                SparseVector vec = (SparseVector) inputVec;
+                SparseVectorWithIntIndex vec = (SparseVectorWithIntIndex) inputVec;
                 int[] outputIndices = new int[indices.length];
                 double[] outputValues = new double[indices.length];
                 for (int i = 0; i < indices.length; i++) {
@@ -140,7 +140,7 @@ public class VectorSlicer implements Transformer<VectorSlicer>, VectorSlicerPara
                     outputIndices = Arrays.copyOf(outputIndices, nnz);
                     outputValues = Arrays.copyOf(outputValues, nnz);
                 }
-                outputVec = new SparseVector(indices.length, outputIndices, outputValues);
+                outputVec = new SparseVectorWithIntIndex(indices.length, outputIndices, outputValues);
             }
             return Row.join(row, Row.of(outputVec));
         }
